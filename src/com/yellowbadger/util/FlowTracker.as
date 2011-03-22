@@ -58,11 +58,13 @@ package com.yellowbadger.util
 		
 		public static var beginFlowToken:String = "";
 		
-		public static var logDirectory:String = "flowTracker";
+		public static var logDirectory:String = "flowtracker";
 		
 		public static var logExternal:Function = logToFile; 
 		
-		public static var stackFilters:Array = ["com.yellowbadger.","spicefactory","flash.","mx.","/builtin","NetConnectionMessageResponder","SetIntervalTimer/onTimer","ParsleyEventHelper"];
+		public static var stackFilters:Array = ["com.yellowbadger.","spicefactory","flash.","mx.","/builtin","NetConnectionMessageResponder","SetIntervalTimer/onTimer"];
+		
+		public static var initialized:Boolean = initialize();
 		
 		private static var indent:String = "";
 		
@@ -80,7 +82,6 @@ package com.yellowbadger.util
 		
 		private static var fileStream:FileStream;
 		
-		public static var initialized:Boolean = initialize();
 		
 		private static var prevKeystroke:String;
 		
@@ -367,7 +368,7 @@ package com.yellowbadger.util
 				return;
 			}
 			files = files.sort(fileCompare);
-			while (files.length > maxLogsToKeep) {
+			while (files.length >= maxLogsToKeep) {
 				(files.pop() as File).deleteFile();
 			}
 		}

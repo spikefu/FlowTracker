@@ -23,3 +23,47 @@ THE SOFTWARE.
 This a utility to log the events, commands and service calls in a Cairngorm or Parsley application.
 
 Currently it works only with parsley 2.3.2 and Cairngorm 2.2.1.
+
+The tracker works by monkey patching core classes such as com.adobe.cairngorm.control.CairngormEventDispatcher and mx.rpc.Responder and adding calls to FlowTracker.begin() and FlowTracker.end() around things that it tracks.
+
+In order to use the FlowTracker in your development environment add the project to the build path of any projects you want to track. Once you have done that, it will automatically start logging events, commands and service calls to a flowtracker directory inside your user directory.
+
+A new log is created every time you launch an app that uses the FlowTracker and by default it keeps the last 30 log files.
+
+There are a number of public static constants that allow you to configure the behavior of the tracker.
+
+FlowTracker.on (Boolean=true) - Allows you to turn the tracker on and off programmatically.
+
+FlowTracker.showHints (Boolean=false) - Provides additional hints about what is being logged 
+  e.g. ->MessageEvent.result ("dispatched") [0ms] instead of ->MessageEvent.result[0ms] 
+
+FlowTracker.showTimes (Boolean=true) - Shows the time when each tracked item was logged.
+
+FlowTracker.showPackageNames (Boolean=False) - Shows the full package name rather than just the class name for tracked items.
+
+FlowTracker.showCaller (Boolean=true) - Attempts to determine the file name and line number where the tracked item originated. This only works in the debug player because it uses stack traces to figure the info out.
+
+FlowTracker.maxLogsToKeep (int=30) - Number of log files to retain. Older files are removed in the order they were created if there are more than this number of files in the flowtracker directory.
+
+FlowTracker.logToConsole (Boolean=true) - Logs items to the console using trace().
+
+FlowTracker.beginToken (String=">") - The token to indicate the start of a flow.
+
+FlowTracker.endToken (String="<") - The token to indicate the end of a flow.
+
+FlowTracker.markToken (String="+") - The token to indicate an item such as a service invocation that has only one entry, not a begin and end.
+
+FlowTracker.indentToken (String="-") - The token used to indent nested items in a flow.
+
+FlowTracker.beginFlowToken(String="") - The token to print on the line before the beginning of a flow.
+
+FlowTracker.endFlowToken(String="") - The token to print on the line after the end of a flow.
+
+FlowTracker.logDirectory (String="flowtracker") - The directory where log files will be placed under your user directory.
+
+FlowTracker.logExternal (Function=logToFile) - The function to use for logging if you don't want to use the default 
+
+FlowTracker.logTofile() method. This function should accept a single parameter of type String.
+
+FlowTracker.stackFilters - (Array=["com.yellowbadger.","spicefactory","flash.","mx.","/builtin","NetConnectionMessageResponder","SetIntervalTimer/onTimer"])
+packages that should not be considered origins when attempting to determine the caller that triggered a tracked element.
